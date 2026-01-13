@@ -1,0 +1,838 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Services - PixelWaves Design</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #000000;
+            background: #000;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        html, body {
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+        }
+
+        /* Loading Animation */
+        .loader-wrapper {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 10000;
+            transition: opacity 0.5s ease, visibility 0.5s ease;
+        }
+
+        .loader-wrapper.hidden {
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        .loader {
+            width: 150px;
+            height: 150px;
+            position: relative;
+            background: white;
+            border-radius: 50%;
+            padding: 0.5rem;
+            box-shadow: 0 10px 40px rgba(134, 244, 0, 0.596);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        .loader-logo {
+            width: 90%;
+            height: 90%;
+            object-fit: cover;
+            border-radius: 50%;
+        }
+
+        .loader-text {
+            color: #a8e063;
+            font-size: 1.2rem;
+            margin-top: 2rem;
+            text-align: center;
+            animation: fadeInOut 1.5s ease-in-out infinite;
+            position: absolute;
+            bottom: -60px;
+            left: 50%;
+            transform: translateX(-50%);
+            white-space: nowrap;
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+            50% {
+                transform: scale(1.1);
+                opacity: 0.8;
+            }
+        }
+
+        @keyframes fadeInOut {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 1; }
+        }
+
+        /* Scroll Progress Bar */
+        .scroll-progress {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 0%;
+            height: 4px;
+            background: linear-gradient(90deg, #a8e063 0%, #56ab2f 100%);
+            z-index: 10001;
+            transition: width 0.1s ease;
+            box-shadow: 0 0 10px rgba(168, 224, 99, 0.5);
+        }
+
+        #gradient-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        #stars-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        header {
+            background: linear-gradient(135deg, rgba(54, 54, 54, 0.9) 0%, rgba(0, 0, 0, 0.9) 100%);
+            backdrop-filter: blur(10px);
+            color: #000000;
+            padding: 1rem 0;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(255, 255, 255, 0.3);
+            transition: transform 0.3s ease-in-out;
+        }
+
+        header.hidden {
+            transform: translateY(-100%);
+        }
+
+        nav {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 2rem;
+        }
+
+        .logo {
+    z-index: 1001;
+    display: flex;
+    align-items: center;
+    animation: logoFadeIn 1s ease-in-out;
+}
+
+.logo-img {
+    height: 55px;
+    width: 55px;
+    object-fit: cover;
+    border-radius: 50%;
+    background: white;
+    padding: 0.25rem;
+    box-shadow: 0 4px 15px rgba(134, 244, 0, 0.5);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.logo-img:hover {
+    transform: scale(1.15);
+    box-shadow: 0 6px 25px rgba(134, 244, 0, 0.7);
+}
+
+@keyframes logoFadeIn {
+    0% {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@media (max-width: 768px) {
+    .logo-img {
+        height: 48px;
+        width: 48px;
+        padding: 0.2rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .logo-img {
+        height: 42px;
+        width: 42px;
+        padding: 0.2rem;
+    }
+}
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            gap: 2rem;
+        }
+
+ nav a {
+    color: #ffffff;
+    text-decoration: none;
+    padding: 0.5rem 1rem;
+    border-radius: 5px;
+    position: relative;
+    transition: all 0.3s ease;
+    overflow: hidden;
+    display: block;
+}
+
+nav a::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.2);
+    transition: left 0.3s ease;
+    z-index: -1;
+}
+
+nav a:hover {
+    transform: translateY(-2px);
+    background: rgba(255, 255, 255, 0.1);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+nav a:hover::before {
+    left: 0;
+}
+
+        .page-header {
+            margin-top: 80px;
+            padding: 4rem 2rem 2rem;
+            text-align: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .page-header h1 {
+            font-size: 3rem;
+            color: #a8e063;
+            margin-bottom: 1rem;
+            animation: fadeInUp 0.8s ease;
+        }
+
+        .page-header p {
+            font-size: 1.2rem;
+            color: #ccc;
+            max-width: 700px;
+            margin: 0 auto;
+            animation: fadeInUp 0.8s ease 0.1s both;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 3rem 2rem 5rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .service-card {
+            background: linear-gradient(135deg, #003006 0%, #56ab2f 100%);
+            color: white;
+            padding: 2rem;
+            border-radius: 10px;
+            text-align: center;
+            transition: transform 0.3s, box-shadow 0.3s;
+            box-shadow: 0 5px 20px rgba(168, 224, 99, 0.3);
+            animation: fadeInUp 0.6s ease;
+            animation-fill-mode: both;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .service-card:nth-child(1) { animation-delay: 0.1s; }
+        .service-card:nth-child(2) { animation-delay: 0.2s; }
+        .service-card:nth-child(3) { animation-delay: 0.3s; }
+        .service-card:nth-child(4) { animation-delay: 0.4s; }
+        .service-card:nth-child(5) { animation-delay: 0.5s; }
+        .service-card:nth-child(6) { animation-delay: 0.6s; }
+
+        .service-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .service-card:hover::before {
+            opacity: 1;
+        }
+
+        .service-card:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 30px rgba(168, 224, 99, 0.5);
+        }
+
+        .service-card h3 {
+            margin-bottom: 1rem;
+            color: #fff;
+            font-size: 1.8rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .service-card p {
+            color: #fff;
+            line-height: 1.8;
+            font-size: 1.05rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .service-icon {
+            width: 60px;
+            height: 60px;
+            margin: 0 auto 1.5rem;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            transition: transform 0.3s ease;
+        }
+
+        .service-card:hover .service-icon {
+            transform: rotateY(360deg);
+        }
+
+        footer {
+            background: linear-gradient(135deg, rgba(54, 54, 54, 0.9) 0%, rgba(0, 0, 0, 0.9) 100%);
+            backdrop-filter: blur(10px);
+            color: white;
+            text-align: center;
+            padding: 1rem;
+            position: relative;
+            z-index: 1;
+            margin-top: 3rem;
+        }
+
+        .social-links {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            z-index: 1000;
+        }
+
+        .social-links a {
+            width: 45px;
+            height: 45px;
+            background: linear-gradient(135deg, #a8e063 0%, #56ab2f 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            box-shadow: 0 4px 15px rgba(168, 224, 99, 0.4);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .social-links a:hover {
+            transform: translateY(-5px) scale(1.1);
+            box-shadow: 0 6px 25px rgba(168, 224, 99, 0.6);
+        }
+
+        .social-links a svg {
+            width: 22px;
+            height: 22px;
+            fill: #000;
+        }
+
+        @media (max-width: 768px) {
+            .page-header h1 {
+                font-size: 2.5rem;
+            }
+
+            nav ul {
+                gap: 1rem;
+                font-size: 0.9rem;
+            }
+
+            .services-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        .hamburger {
+    display: none;
+    flex-direction: column;
+    gap: 6px;
+    cursor: pointer;
+    z-index: 1100;
+}
+
+.hamburger span {
+    width: 28px;
+    height: 3px;
+    background: #fff;
+    border-radius: 5px;
+    transition: 0.3s ease;
+}
+
+/* Mobile Navbar */
+@media (max-width: 768px) {
+
+    .hamburger {
+        display: flex;
+    }
+
+    nav ul {
+        position: fixed;
+        top: 70px;
+        right: -100%;
+        width: 260px;
+        height: calc(100vh - 70px);
+        background: rgba(0,0,0,0.95);
+        backdrop-filter: blur(12px);
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 2rem;
+        gap: 1.5rem;
+        transition: right 0.35s ease;
+        box-shadow: -10px 0 30px rgba(0,0,0,0.6);
+    }
+
+    nav ul.active {
+        right: 0;
+    }
+
+    nav ul li {
+        width: 100%;
+    }
+
+    nav ul li a {
+        display: block;
+        width: 100%;
+        padding: 0.8rem 0;
+        font-size: 1.05rem;
+    }
+
+    .page-header h1 {
+        font-size: 2.2rem;
+    }
+
+    .container {
+        padding: 2rem 1.2rem 4rem;
+    }
+
+    .project-image {
+        height: 200px;
+    }}
+
+/* Animated Background Text */
+.background-text-container {
+    position: fixed;
+    top: 50%;
+    left: 0;
+    transform: translateY(-50%);
+    width: 100%;
+    overflow: hidden;
+    z-index: 0;
+    pointer-events: none;
+}
+
+.background-text {
+    display: inline-block;
+    font-size: 12rem;
+    font-weight: 900;
+    color: rgba(255, 255, 255, 0.03);
+    white-space: nowrap;
+    animation: scrollText 25s linear infinite;
+    letter-spacing: 2rem;
+    padding-right: 5rem;
+}
+
+@keyframes scrollText {
+    0% {
+        transform: translateX(-50%);
+    }
+    100% {
+        transform: translateX(0);
+    }
+}
+
+@media (max-width: 768px) {
+    .background-text {
+        font-size: 6rem;
+        letter-spacing: 1rem;
+        padding-right: 3rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .background-text {
+        font-size: 4rem;
+        letter-spacing: 0.5rem;
+        padding-right: 2rem;
+    }
+}
+
+    </style>
+</head>
+<body>
+    <!-- Loading Animation -->
+    <div class="loader-wrapper">
+        <div style="text-align: center; position: relative;">
+            <div class="loader">
+                <img src="https://i.postimg.cc/jSVRnq0q/Pixel-Waves-Design-2.png" alt="Loading..." class="loader-logo">
+            </div>
+            <div class="loader-text">Loading Services...</div>
+        </div>
+    </div>
+
+    <!-- Scroll Progress Bar -->
+    <div class="scroll-progress"></div>
+
+    <canvas id="gradient-canvas"></canvas>
+    <canvas id="stars-canvas"></canvas>
+    <div class="background-text-container">
+    <div class="background-text">
+        PIXELWAVES DESIGNS PIXELWAVES DESIGNS PIXELWAVES DESIGNS PIXELWAVES DESIGNS PIXELWAVES DESIGNS PIXELWAVES DESIGNS
+    </div>
+</div>
+    
+    <header id="header">
+    <nav>
+        <div class="logo">
+            <img src="https://i.postimg.cc/jSVRnq0q/Pixel-Waves-Design-2.png" alt="PixelWaves Design" class="logo-img">
+        </div>
+            <div class="hamburger" id="hamburger">
+    <span></span>
+    <span></span>
+    <span></span>
+</div>
+            <ul id="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="index.html#about">About</a></li>
+                <li><a href="mywork.html">My Work</a></li>
+                <li><a href="portfolio.html">Portfolio</a></li>
+                <li><a href="services.html" class="active">Services</a></li>
+                <li><a href="contact.html">Contact</a></li>>
+            </ul>
+        </nav>
+    </header>
+
+    <div class="page-header">
+        <h1>Services</h1>
+        <p>Professional design services tailored to elevate your brand and connect with your audience.</p>
+    </div>
+
+    <div class="container">
+        <div class="services-grid">
+            <div class="service-card">
+                <div class="service-icon">🎨</div>
+                <h3>Branding</h3>
+                <p>Complete brand identity development including logo, colors, typography, and brand guidelines</p>
+            </div>
+            <div class="service-card">
+                <div class="service-icon">💻</div>
+                <h3>Digital Design</h3>
+                <p>Web graphics, social media content, and digital marketing materials</p>
+            </div>
+            <div class="service-card">
+                <div class="service-icon">📄</div>
+                <h3>Print Design</h3>
+                <p>Business cards, brochures, posters, and all print collateral</p>
+            </div>
+            <div class="service-card">
+                <div class="service-icon">📱</div>
+                <h3>Social Media Graphics</h3>
+                <p>Eye-catching visuals designed to boost engagement on all social platforms</p>
+            </div>
+            <div class="service-card">
+                <div class="service-icon">📦</div>
+                <h3>Packaging Design</h3>
+                <p>Creative packaging solutions that make your products stand out on the shelf</p>
+            </div>
+            <div class="service-card">
+                <div class="service-icon">✏️</div>
+                <h3>Illustration</h3>
+                <p>Custom illustrations and visual assets tailored to your brand's unique style</p>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2026 Ibad Ur Rehman. All rights reserved.</p>
+    </footer>
+
+    <div class="social-links">
+        <a href="https://www.linkedin.com/in/ibad-ur-rehman-439609326/" target="_blank" title="LinkedIn">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
+            </svg>
+        </a>
+        <a href="https://www.instagram.com/designsbypixelwaves_75218/" target="_blank" title="Instagram">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+            </svg>
+        </a>
+    </div>
+
+    <script>
+        // Loading Animation
+        window.addEventListener('load', () => {
+            const loader = document.querySelector('.loader-wrapper');
+            setTimeout(() => {
+                loader.classList.add('hidden');
+            }, 1500);
+        });
+
+        // Scroll Progress Bar
+        window.addEventListener('scroll', () => {
+            const scrollProgress = document.querySelector('.scroll-progress');
+            const scrollTop = window.pageYOffset;
+            const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+            const scrollPercent = (scrollTop / docHeight) * 100;
+            scrollProgress.style.width = scrollPercent + '%';
+        });
+
+        // Gradient Canvas Animation
+        const canvas = document.getElementById('gradient-canvas');
+        const ctx = canvas.getContext('2d');
+        
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        window.addEventListener('resize', () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        });
+
+        let time = 0;
+
+        function drawWave(yOffset, amplitude, frequency, color, opacity) {
+            ctx.beginPath();
+            ctx.moveTo(0, canvas.height);
+
+            for (let x = 0; x < canvas.width; x++) {
+                const y = yOffset + Math.sin(x * frequency + time) * amplitude;
+                ctx.lineTo(x, y);
+            }
+
+            ctx.lineTo(canvas.width, canvas.height);
+            ctx.closePath();
+
+            const gradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
+            gradient.addColorStop(0, `${color}00`);
+            gradient.addColorStop(0.5, `${color}${Math.floor(opacity * 255).toString(16).padStart(2, '0')}`);
+            gradient.addColorStop(1, `${color}00`);
+            
+            ctx.fillStyle = gradient;
+            ctx.fill();
+        }
+
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            drawWave(canvas.height * 0.7, 80, 0.005, '#a8e063', 0.15);
+            drawWave(canvas.height * 0.6, 60, 0.008, '#56ab2f', 0.1);
+            drawWave(canvas.height * 0.75, 100, 0.003, '#a8e063', 0.08);
+            drawWave(canvas.height * 0.5, 70, 0.006, '#2d5016', 0.12);
+            drawWave(canvas.height * 0.8, 90, 0.004, '#a8e063', 0.06);
+
+            time += 0.01;
+            requestAnimationFrame(animate);
+        }
+
+        animate();
+
+        // Stars and Shooting Stars Animation
+        const starsCanvas = document.getElementById('stars-canvas');
+        const starsCtx = starsCanvas.getContext('2d');
+        
+        starsCanvas.width = window.innerWidth;
+        starsCanvas.height = window.innerHeight;
+
+        window.addEventListener('resize', () => {
+            starsCanvas.width = window.innerWidth;
+            starsCanvas.height = window.innerHeight;
+        });
+
+        const stars = [];
+        for (let i = 0; i < 150; i++) {
+            stars.push({
+                x: Math.random() * starsCanvas.width,
+                y: Math.random() * starsCanvas.height,
+                size: Math.random() * 2,
+                speedX: (Math.random() - 0.5) * 0.3,
+                speedY: (Math.random() - 0.5) * 0.3,
+                opacity: Math.random() * 0.5 + 0.3
+            });
+        }
+
+        const shootingStars = [];
+        function createShootingStar() {
+            shootingStars.push({
+                x: Math.random() * starsCanvas.width,
+                y: Math.random() * starsCanvas.height * 0.5,
+                length: Math.random() * 80 + 60,
+                speed: Math.random() * 10 + 15,
+                opacity: 1,
+                angle: Math.PI / 4
+            });
+        }
+
+        setInterval(() => {
+            if (Math.random() > 0.5) {
+                createShootingStar();
+            }
+        }, 3000);
+
+        function animateStars() {
+            starsCtx.clearRect(0, 0, starsCanvas.width, starsCanvas.height);
+
+            stars.forEach(star => {
+                starsCtx.beginPath();
+                starsCtx.arc(star.x, star.y, star.size, 0, Math.PI * 2);
+                starsCtx.fillStyle = `rgba(255, 255, 255, ${star.opacity})`;
+                starsCtx.fill();
+
+                star.x += star.speedX;
+                star.y += star.speedY;
+
+                if (star.x < 0) star.x = starsCanvas.width;
+                if (star.x > starsCanvas.width) star.x = 0;
+                if (star.y < 0) star.y = starsCanvas.height;
+                if (star.y > starsCanvas.height) star.y = 0;
+
+                star.opacity += (Math.random() - 0.5) * 0.02;
+                star.opacity = Math.max(0.2, Math.min(0.8, star.opacity));
+            });
+
+            for (let i = shootingStars.length - 1; i >= 0; i--) {
+                const star = shootingStars[i];
+                
+                starsCtx.beginPath();
+                starsCtx.moveTo(star.x, star.y);
+                const endX = star.x + Math.cos(star.angle) * star.length;
+                const endY = star.y + Math.sin(star.angle) * star.length;
+                starsCtx.lineTo(endX, endY);
+                
+                const gradient = starsCtx.createLinearGradient(star.x, star.y, endX, endY);
+                gradient.addColorStop(0, `rgba(255, 255, 255, ${star.opacity})`);
+                gradient.addColorStop(1, 'rgba(255, 255, 255, 0)');
+                
+                starsCtx.strokeStyle = gradient;
+                starsCtx.lineWidth = 2;
+                starsCtx.stroke();
+
+                star.x += Math.cos(star.angle) * star.speed;
+                star.y += Math.sin(star.angle) * star.speed;
+                star.opacity -= 0.01;
+
+                if (star.opacity <= 0 || star.x > starsCanvas.width || star.y > starsCanvas.height) {
+                    shootingStars.splice(i, 1);
+                }
+            }
+
+            requestAnimationFrame(animateStars);
+        }
+
+        animateStars();
+
+        let lastScroll = 0;
+        const header = document.getElementById('header');
+
+        window.addEventListener('scroll', () => {
+            const currentScroll = window.pageYOffset;
+
+            if (currentScroll <= 0) {
+                header.classList.remove('hidden');
+                return;
+            }
+
+            if (currentScroll > lastScroll && currentScroll > 100) {
+                header.classList.add('hidden');
+            } else {
+                header.classList.remove('hidden');
+            }
+
+            lastScroll = currentScroll;
+        });
+        const hamburger = document.getElementById("hamburger");
+const navLinks = document.getElementById("nav-links");
+
+hamburger.addEventListener("click", () => {
+    navLinks.classList.toggle("active");
+});
+
+// Close menu when clicking a link
+document.querySelectorAll("#nav-links a").forEach(link => {
+    link.addEventListener("click", () => {
+        navLinks.classList.remove("active");
+    });
+});
+
+    </script>
+</body>
+</html>
